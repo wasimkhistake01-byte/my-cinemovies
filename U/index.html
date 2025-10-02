@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - Movie Streaming</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Ads-->
+    <script type='text/javascript' src='//pl27729814.revenuecpmgate.com/a0/c7/b7/a0c7b795e06f0cb1fe9fb10e4dd56aec.js'></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburgerMenu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="logo" onclick="navigateToHome()" style="cursor: pointer;">
+                    <div class="logo-container">
+                        <div class="logo-icon">
+                            <div class="play-button">
+                                <div class="play-triangle"></div>
+                            </div>
+                            <div class="cinema-reel"></div>
+                        </div>
+                        <div class="logo-text">
+                            <span class="brand-name">Cine<span class="brand-accent">Movies</span></span>
+                            <span class="brand-tagline">Premium Streaming</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Search button removed - using only bottom navigation Search tab -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide-out Navigation Menu -->
+    <nav class="slide-nav" id="slideNav">
+        <div class="slide-nav-header">
+            <div class="slide-nav-logo">
+                <div class="logo-container compact">
+                    <div class="logo-icon">
+                        <div class="play-button">
+                            <div class="play-triangle"></div>
+                        </div>
+                    </div>
+                    <span class="brand-name">Cine<span class="brand-accent">Movies</span></span>
+                </div>
+            </div>
+            <button class="slide-nav-close" id="slideNavClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="slide-nav-content">
+            <!-- Main Navigation -->
+            <div class="nav-section">
+                <div class="nav-section-title">Navigation</div>
+                <a href="#" class="slide-nav-item" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="slide-nav-item" data-tab="series">
+                    <i class="fas fa-tv"></i>
+                    <span>Series</span>
+                </a>
+                <a href="#" class="slide-nav-item" data-tab="watchlist">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Watchlist</span>
+                </a>
+                <a href="#" class="slide-nav-item" data-tab="search">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                </a>
+            </div>
+            
+            <!-- Request Section -->
+            <div class="nav-section">
+                <div class="nav-section-title">Services</div>
+                <a href="#" class="slide-nav-item request-item" onclick="openRequestModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Request Movie/Series</span>
+                    <div class="request-badge">New</div>
+                </a>
+            </div>
+            
+            <!-- Legal Pages Section -->
+            <div class="nav-section">
+                <div class="nav-section-title">Legal & Support</div>
+                <a href="#" class="slide-nav-item" onclick="openLegalPage('privacy')">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Privacy Policy</span>
+                </a>
+                <a href="#" class="slide-nav-item" onclick="openLegalPage('dmca')">
+                    <i class="fas fa-copyright"></i>
+                    <span>DMCA Policy</span>
+                </a>
+                <a href="#" class="slide-nav-item" onclick="openLegalPage('disclaimer')">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Disclaimer</span>
+                </a>
+                <a href="#" class="slide-nav-item" onclick="openLegalPage('contact')">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay for menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Legal Pages Modal -->
+    <div class="legal-modal" id="legalModal">
+        <div class="legal-modal-content">
+            <div class="legal-modal-header">
+                <h2 id="legalModalTitle">Legal Page</h2>
+                <button class="legal-modal-close" onclick="closeLegalModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="legal-modal-body" id="legalModalBody">
+                <div class="loading">Loading content...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Request Modal -->
+    <div class="request-modal" id="requestModal">
+        <div class="request-modal-content">
+            <div class="request-modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Request Movie/Series</h2>
+                <button class="request-modal-close" onclick="closeRequestModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="request-modal-body">
+                <form id="requestForm" class="request-form">
+                    <div class="form-group">
+                        <label for="requestType">Type *</label>
+                        <select id="requestType" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="movie">Movie</option>
+                            <option value="series">TV Series</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="requestTitle">Title *</label>
+                        <input type="text" id="requestTitle" name="title" required placeholder="Enter movie/series title">
+                    </div>
+                    <div class="form-group">
+                        <label for="requestYear">Release Year (Optional)</label>
+                        <input type="number" id="requestYear" name="year" placeholder="e.g., 2023" min="1900" max="2030">
+                    </div>
+                    <div class="form-group">
+                        <label for="requestDescription">Additional Details (Optional)</label>
+                        <textarea id="requestDescription" name="description" placeholder="Any additional information (genre, cast, etc.)" rows="4"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeRequestModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="container">
+            <!-- Search Results Section (Initially Hidden) -->
+            <section id="searchResults" class="section hidden">
+                <h2 class="section-title">Search Results</h2>
+                <div id="searchMoviesGrid" class="movies-grid"></div>
+                <div id="noResults" class="no-results hidden">
+                    <p>No movies found matching your search.</p>
+                </div>
+            </section>
+
+            <!-- Advanced Search Section -->
+            <section id="advancedSearchSection" class="section hidden">
+                <div class="advanced-search-container">
+                    <h2 class="section-title">Search Movies & Series</h2>
+                    
+                    <!-- Search Input with Auto-suggestions -->
+                    <div class="search-input-container">
+                        <input type="text" id="advancedSearchInput" placeholder="Search for movies, series, actors, directors..." class="advanced-search-input">
+                        <div id="suggestions" class="suggestions-dropdown hidden"></div>
+                    </div>
+                    
+                    <!-- Search Results -->
+                    <div id="advancedSearchResults" class="advanced-search-results hidden">
+                        <h3 class="results-title">Search Results</h3>
+                        <div id="advancedSearchGrid" class="movies-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Movies Section with Dynamic Categories -->
+            <section class="section">
+                <h2 class="section-title">Movies</h2>
+                
+                <!-- Dynamic Movie Categories -->
+                <div id="movieCategoriesContainer" class="categories-container">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+                
+                <!-- Trending Movies Section -->
+                <div class="category-section" id="trendingSection">
+                    <h3 class="category-title">Trending Now</h3>
+                    <div id="trendingMovies" class="movies-grid">
+                        <div class="loading">Loading movies...</div>
+                    </div>
+                </div>
+
+                <!-- Latest Movies Section -->
+                <div class="category-section" id="latestSection">
+                    <h3 class="category-title">Latest Releases</h3>
+                    <div id="latestMovies" class="movies-grid">
+                        <div class="loading">Loading movies...</div>
+                    </div>
+                </div>
+
+                <!-- Popular Movies Section -->
+                <div class="category-section" id="popularSection">
+                    <h3 class="category-title">Popular Movies</h3>
+                    <div id="popularMovies" class="movies-grid">
+                        <div class="loading">Loading movies...</div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Movie Categories Sections -->
+                <div id="dynamicMovieCategoriesContainer">
+                    <!-- Dynamic categories will be added here -->
+                </div>
+
+                <!-- Ads -->
+                <script type='text/javascript' src='//pl27729814.revenuecpmgate.com/a0/c7/b7/a0c7b795e06f0cb1fe9fb10e4dd56aec.js'></script>
+            </section>
+
+
+
+
+            <!-- Series Section -->
+            <section id="seriesSection" class="section hidden">
+                <h2 class="section-title">Series</h2>
+                
+                <!-- Dynamic Series Categories -->
+                <div id="seriesCategoriesContainer" class="categories-container">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+                
+                <div id="seriesGrid" class="movies-grid">
+                    <div class="loading">Loading series...</div>
+                </div>
+
+                <!-- Ads -->
+                <script type='text/javascript' src='//pl27729814.revenuecpmgate.com/a0/c7/b7/a0c7b795e06f0cb1fe9fb10e4dd56aec.js'></script>
+            </section>
+
+            <!-- Watchlist Section -->
+            <section id="watchlistSection" class="section hidden">
+                <h2 class="section-title">My Watchlist</h2>
+                <div id="watchlistGrid" class="movies-grid">
+                    <div class="loading">Loading watchlist...</div>
+                </div>
+
+                <!-- Ads -->
+                <script type='text/javascript' src='//pl27729814.revenuecpmgate.com/a0/c7/b7/a0c7b795e06f0cb1fe9fb10e4dd56aec.js'></script>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item active" data-tab="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-tab="series">
+            <i class="fas fa-tv"></i>
+            <span>Series</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-tab="watchlist">
+            <i class="fas fa-bookmark"></i>
+            <span>Watchlist</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-tab="search">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+
+        <!-- Ads -->
+        <script type='text/javascript' src='//pl27729814.revenuecpmgate.com/a0/c7/b7/a0c7b795e06f0cb1fe9fb10e4dd56aec.js'></script>
+    </nav>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CineMovies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
